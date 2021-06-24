@@ -1,0 +1,86 @@
+﻿@using ManageEmployeeContacts;
+@model dynamic;
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Chi tiết</h1>
+
+<div>
+    <h4>Phòng @Model.Department.DepartmentName</h4>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Họ và tên
+                </th>
+                <th>
+                    Ngày sinh
+                </th>
+                <th>
+                    Giới tính
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Số điện thoại
+                </th>
+                <th>
+                    Trạng thái
+                </th>
+                <th>
+                    Chuyển phòng ban
+                </th>
+                <th>
+                    Phòng ban
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Employee item in Model.Employees)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeFullname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeDob)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeGender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeEmail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeePhone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeState)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeChangeDepartment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                    </td>
+                    <td>
+                        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a> |
+                        <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.EmployeeId">Details</a> |
+                        <a asp-controller="Employee" asp-action="Delete" asp-route-id="@item.EmployeeId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-controller="Employee" asp-action="ExportExcel" asp-route-id="@Model.Department.DepartmentId">Download Excel</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Department.DepartmentId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

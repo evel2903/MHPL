@@ -1,0 +1,134 @@
+﻿@model ManageEmployeeContacts.Models.Employee
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Chi tiết</h1>
+@if (@ViewBag.messageStatus != null)
+{
+    <div class="position-fixed col-5 alert @ViewBag.messageStyle mb-0 p-2 mr-2" id="success-alert" style=" top: 0; right: 0; margin-top: 6px; ">
+        <strong>@ViewBag.messageStatus &ensp;</strong> @ViewBag.messageContent.
+    </div>
+}
+
+<div class="modal fade" id="changeDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Chuyển công tác</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="ChangeDepartment">
+                    <input type="hidden" asp-for="EmployeeId" />
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Recipient:</label>
+                        <select asp-for="DepartmentId" class="form-control">
+                            @foreach (var item in ViewBag.Departments)
+                            {
+                                <option value="@item.DepartmentId"> @item.DepartmentName </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="stateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Chuyển trạng thái</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="ChangeState">
+                    <input type="hidden" asp-for="EmployeeId" />
+                    <div class="form-group">
+                        <label for="EmployeeState" class="col-form-label">Trạng thái:</label>
+                        <select asp-for="EmployeeState" class="form-control">
+                            <option value="Đang làm việc">Đang làm việc</option>
+                            <option value="Đã nghỉ việc">Đã nghỉ việc</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div>
+    <h4>Nhân viên</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Họ và Tên
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeFullname)
+        </dd>
+        <dt class="col-sm-2">
+            Ngày sinh
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeDob)
+        </dd>
+        <dt class="col-sm-2">
+            Giới tính
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeGender)
+        </dd>
+        <dt class="col-sm-2">
+            Email
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeEmail)
+        </dd>
+        <dt class="col-sm-2">
+            Số điện thoại
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmployeePhone)
+        </dd>
+        <dt class="col-sm-2">
+            Trạng thái
+        </dt>
+        <dd class="col-sm-10 d-flex align-items-center">
+            @Html.DisplayFor(model => model.EmployeeState)
+            <button type="button" class="btn btn-link p-0 ml-2" data-toggle="modal" data-target="#stateModal">Thay đổi</button>
+        </dd>
+        <dt class="col-sm-2">
+            Chuyển công tác
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeChangeDepartment)
+        </dd>
+        <dt class="col-sm-2">
+            Phòng làm việc
+        </dt>
+        <dd class="col-sm-10 d-flex align-items-center">
+            @Html.DisplayFor(model => model.Department.DepartmentName)
+            <button type="button" class="btn btn-link p-0 ml-2" data-toggle="modal" data-target="#changeDepartmentModal">Thay đổi</button>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.EmployeeId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

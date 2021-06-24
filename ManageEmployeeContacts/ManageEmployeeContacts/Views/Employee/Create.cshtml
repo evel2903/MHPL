@@ -1,0 +1,76 @@
+﻿@model ManageEmployeeContacts.Models.Employee
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Tạo mới</h1>
+
+<h4>Nhân viên</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmployeeFullname" class="control-label">Họ và tên</label>
+                <input asp-for="EmployeeFullname" class="form-control" />
+                <span asp-validation-for="EmployeeFullname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeDob" class="control-label">Ngày sinh</label>
+                <input type="date" asp-for="EmployeeDob" class="form-control" />
+                <span asp-validation-for="EmployeeDob" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeGender" class="control-label">Giới tính</label>
+                <select asp-for="EmployeeGender" class="form-control">
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                </select>
+                <span asp-validation-for="EmployeeGender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeEmail" class="control-label">Email</label>
+                <input type="email" asp-for="EmployeeEmail" class="form-control" />
+                <span asp-validation-for="EmployeeEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeePhone" class="control-label">Số điện thoại</label>
+                <input asp-for="EmployeePhone" class="form-control" />
+                <span asp-validation-for="EmployeePhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeState" class="control-label">Trạng thái</label>
+                <input asp-for="EmployeeState" value="Đang làm việc" class="form-control" disabled />
+                <span asp-validation-for="EmployeeState" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeChangeDepartment" class="control-label">Chuyển công tác</label>
+                <input asp-for="EmployeeChangeDepartment" value="Không" class="form-control" disabled />
+                <span asp-validation-for="EmployeeChangeDepartment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartmentId" class="control-label">Phòng làm việc</label>
+                <select asp-for="DepartmentId" class="form-control">
+                    @foreach (var item in ViewBag.Departments)
+                    {
+                        <option value="@item.DepartmentId"> @item.DepartmentName </option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

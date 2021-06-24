@@ -1,0 +1,134 @@
+﻿@model IEnumerable<ManageEmployeeContacts.Models.Employee>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (@ViewBag.messageStatus != null)
+{
+    <div class="position-fixed col-5 alert @ViewBag.messageStyle mb-0 p-2 mr-2" id="success-alert" style=" top: 0; right: 0; margin-top: 6px; ">
+        <strong>@ViewBag.messageStatus &ensp;</strong> @ViewBag.messageContent.
+    </div>
+}
+
+<div class="container-fluid row">
+    <div class="col-3">
+        <form onsubmit="handleSubmitForm()" asp-action="SendEmail">
+            <input type="hidden" name="_listEmployeeId" id="_listEmployeeId" />
+            <div class="form-group">
+                <label for="_subject">Tiêu đề</label>
+                <input type="text" class="form-control" placeholder="Tiêu đề" name="_subject">
+            </div>
+            <div class="form-group">
+                <label for="_content">Nội dung</label>
+                <textarea class="form-control " aria-label="With textarea" placeholder="Nội dung" rows="10" name="_content"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div class="col">
+        <div class="row d-flex justify-content-end">
+            <form class="form-inline">
+                <select name="_DepartmentId" class="form-control  mr-2" aria-label="Default select example">
+                    <option value="0" selected>Tất cả phòng</option>
+                    @foreach (var item in ViewBag.Departments)
+                    {
+                        <option value="@item.DepartmentId"> @item.DepartmentName </option>
+                    }
+                </select>
+                <input name="_name" class="form-control mr-2" type="search" placeholder="Tìm theo tên" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+        </div>
+
+        <table class="table mt-2">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" value="" id="select-all">
+                    </th>
+                    <th>
+                        Họ và tên
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Số điện thoại
+                    </th>
+                    <th>
+                        Trạng thái
+                    </th>
+                    <th>
+                        Chuyển phòng ban
+                    </th>
+                    <th>
+                        Phòng ban
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item" name="select_item" value="@item.EmployeeId">
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeFullname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeEmail)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeePhone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeState)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeChangeDepartment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts{
+
+    <script type="text/javascript">
+        //Here is the custom javascript just for this view.
+        document.getElementById('select-all').addEventListener('change', () => {
+            let selected_list = document.querySelectorAll('.select-item');
+            if (document.getElementById('select-all').checked) {
+                selected_list.forEach(_i => {
+                    _i.checked = true
+                })
+            }
+            else {
+                selected_list.forEach(_i => {
+                    _i.checked = false
+                })
+            }
+        })
+
+        const getSelectedId = () => {
+            let result = ''
+            let checkboxes = document.querySelectorAll('input[name=select_item]:checked')
+
+            for (let i = 0; i < checkboxes.length; i++) {
+                result += `${checkboxes[i].value} `
+            }
+            return result.trim()
+        }
+
+        const handleSubmitForm = () => {
+            document.getElementById('_listEmployeeId').value = getSelectedId()
+        }
+
+    </script>
+}

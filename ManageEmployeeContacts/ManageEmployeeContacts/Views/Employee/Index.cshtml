@@ -1,0 +1,94 @@
+﻿@model IEnumerable<ManageEmployeeContacts.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1>Quản lý nhân viên</h1>
+@if (@ViewBag.messageStatus != null)
+{
+    <div class="position-fixed col-5 alert @ViewBag.messageStyle mb-0 p-2 mr-2" id="success-alert" style=" top: 0; right: 0; margin-top: 6px; ">
+        <strong>@ViewBag.messageStatus &ensp;</strong> @ViewBag.messageContent.
+    </div>
+}
+
+<div class="d-flex align-items-center justify-content-between row mb-2">
+    <a class="col-2" asp-action="Create">Tạo mới nhân viên</a>
+
+    <form class="col-3 form-outline">
+        <input type="search" name="_name" class="form-control" placeholder="Tìm kiếm tên"
+               aria-label="Search" />
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Họ và tên
+            </th>
+            <th>
+                Ngày sinh
+            </th>
+            <th>
+                Giới tính
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Số điện thoại
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th>
+                Chuyển phòng ban
+            </th>
+            <th>
+                Phòng ban
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeFullname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeDob)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeGender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeePhone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeState)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeChangeDepartment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.EmployeeId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.EmployeeId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-action="ExportExcel" asp-route-id="0">Download Excel</a>
+</div>
